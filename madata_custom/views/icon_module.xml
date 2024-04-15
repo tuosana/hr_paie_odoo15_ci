@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <menuitem id="sale.sale_menu_root"
+            name="Sales"
+            web_icon="madata_custom,static/src/img/Sale.png"
+            active="True"
+            sequence="30"
+            groups="base.group_user"/>
+
+        <menuitem id="mail.menu_root_discuss"
+            name="Discuss"
+            sequence="5"
+            active="True"
+            web_icon="madata_custom,static/src/img/Mail.png"/>
+
+        <menuitem id="crm.crm_menu_root"
+            sequence="25"
+            active="True"
+            web_icon="madata_custom,static/src/img/CRM.png"/>
+        <menuitem
+            id="calendar.mail_menu_calendar"
+            name="Calendar"
+            sequence="10"
+            active="True"
+            web_icon="madata_custom,static/src/img/Calendrier.png"
+            groups="base.group_user"/>
+
+        <menuitem name="Time Off"
+            id="hr_holidays.menu_hr_holidays_root"
+            sequence="225"
+            active="True"
+            web_icon="madata_custom,static/src/img/Conges.png"
+            groups="base.group_user"/>
+        <menuitem name="Contacts"
+            id="contacts.menu_contacts"
+            sequence="20"
+            active="True"
+            web_icon="madata_custom,static/src/img/Contact.png"
+            groups="base.group_user,base.group_partner_manager"/>
+        <!-- <menuitem id="hr_timesheet.timesheet_menu_root"
+            name="Timesheets"
+            sequence="75"
+            active="True"
+            web_icon="madata_custom,static/src/img/Feuillestemps.png"/> -->
+        <menuitem id="hr_expense.menu_hr_expense_root"
+            name="Expenses"
+            sequence="230"
+            active="True"
+            web_icon="madata_custom,static/src/img/Notefrais.png"/>
+
+        <!-- <menuitem name="Project"
+            id="project.menu_main_pm"
+            active="True"
+            web_icon="madata_custom,static/src/img/Projet.png"
+            sequence="70"/> -->
+
+        <menuitem id="utm.menu_link_tracker_root"
+            name="Link Tracker"
+            sequence="270"
+            active="True"
+            web_icon="madata_custom,static/src/img/Siteweb.png"
+            groups="base.group_no_one"/>
+        <menuitem
+            id="hr.menu_hr_root"
+            name="Employés"
+            active="True"
+            web_icon="madata_custom,static/src/img/Employees.png"
+            sequence="185"/>
+        <menuitem id="hr_payroll.menu_hr_payroll_root"
+            name="Paie"
+            sequence="186"
+            active="True"
+            web_icon="madata_custom,static/src/img/Payroll.png"/>
+        
+        <menuitem id="purchase.menu_purchase_root"
+            name="Achats"
+            sequence="135"
+            active="True"
+            web_icon="madata_custom,static/src/img/Achat.png"/>
+        
+        <menuitem id="stock.menu_stock_root"
+            name="Stock"
+            sequence="140"
+            active="True"
+            web_icon="madata_custom,static/src/img/Stock.png"/>
+        
+        <menuitem id="account.menu_finance"
+            name="Comptabilité"
+            sequence="55"
+            active="True"
+            web_icon="madata_custom,static/src/img/Facturation.png"/>
+    </data>
+</odoo>

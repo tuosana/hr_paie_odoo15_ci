@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="report_hr_expense_wizard" model="ir.actions.report">
+        <field name="name">Mes rapports</field>
+        <field name="model">expense.sheet.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">madata_custom_invoice.report_hr_expense_wizard_id</field>
+        <field name="report_file">madata_custom_invoice.report_hr_expense_wizard_id</field>
+        <field name="binding_model_id" ref="model_expense_sheet_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    <template id="report_hr_expense_wizard_id">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class='oe_structure'/>
+                <div class="text-center">
+                    <h2>Rapport notes de frais</h2>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-6">
+                        <table class="text-left">
+                            <tr> 
+                               
+                                <td>
+                                    <t t-if="form.get('start_date')">
+                                        <strong>Date début: </strong>
+                                        <span t-esc="form['start_date'].split('-')[2] + '-' + form['start_date'].split('-')[1] + '-' + form['start_date'].split('-')[0]"/> 
+                                    </t>
+                                </td>
+                            </tr> 
+
+                            <tr> 
+                                <td>
+                                    <t t-if="form.get('end_date')">
+                                        <strong>Date fin: </strong>
+                                        <span t-esc="form['end_date'].split('-')[2] + '-' + form['end_date'].split('-')[1] + '-' + form['end_date'].split('-')[0]"/>
+                                    </t>
+                                </td>
+                            </tr>                                 
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <table class="text-center">
+                            <tr> 
+                                <t t-if="form.get('etat')">
+                                    <td>
+                                        <!-- <t t-esc="form['etat']"/>  -->
+                                        <t t-set="selection_labels" t-value="{'demande': 'Demande', 'rembourse': 'Remboursement', 'all': 'Demande et Remboursement'}"/>
+                                        <p><strong>Types : </strong><span t-esc="selection_labels.get(form.get('etat'))"/></p>                                 
+                                    </td>
+                                </t>                       
+                            </tr>
+                        </table>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <table class="text-left">
+                            <tr> 
+                                <t t-if="form.get('employee_id')">
+                                    <t t-set="my_list" t-value="[]"/>
+                                    <t t-foreach="note_frais" t-as="empl">
+                                        <t t-if="not empl['employee_id'] in my_list">
+                                            <t t-set="my_list" t-value="my_list + [empl['employee_id']]"/>
+                                        </t>
+                                    </t>
+
+                                    <t t-if="len(my_list) == 1">
+                                        <td>
+                                            <p><strong>Employé : </strong><span t-esc="my_list[0][1]"/></p>
+                                            <!-- <p>Employé : 1 </p> -->
+                                        </td>
+                                    </t>                                    
+                                </t>            
+                            </tr>
+                            
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <table >                            
+                            <tr class="text-right"> 
+                                <t t-if="form.get('etat') == 'rembourse'">
+                                    <td>
+                                        <!-- <t t-esc="form['validite']"/> -->
+                                        <t t-set="selection_labels" t-value="{'valide': 'Validé', 'non_valide': 'Non validé'}"/>
+                                        <p><strong>Remboursement : </strong><span t-esc="selection_labels.get(form.get('validite'))"/></p>                         
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <td>
+                                        <!-- <t t-esc="form['validite']"/> -->
+                                        <t t-set="selection_labels" t-value="{'valide': 'Validé', 'non_valide': 'Non validé'}"/>
+                                        <p><strong>Demande : </strong><span t-esc="selection_labels.get(form.get('validite'))"/></p>                         
+                                    </td>
+                                </t> 
+                            </tr>
+                        </table>
+                    </div>                    
+                </div>
+
+                <br/>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Article</th>
+                            <th>
+                                <t t-if="not form.get('employee_id')">
+                                    <span>Employé</span>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="my_list" t-value="[]"/>
+                                    <t t-foreach="note_frais" t-as="empl">
+                                        <t t-if="not empl['employee_id'] in my_list">
+                                            <t t-set="my_list" t-value="my_list + [empl['employee_id']]"/>
+                                        </t>
+                                    </t>
+
+                                    <t t-if="len(my_list) != 1">
+                                        <span>Employé</span>
+                                    </t>                                    
+                                </t>   
+                            </th>
+                            <th>Montant demandé</th>
+                            <th t-if="form.get('etat') != 'rembourse'">Montant dépensé</th>
+                            <th t-if="form.get('etat') != 'rembourse'">Reste</th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tbody">
+                        <t t-set="totaux" t-value="0"/>
+                        <t t-set="my_list" t-value="[]"/>
+                        <tr t-foreach="note_frais" t-as="line">
+                            <!-- <td><span t-esc="line['date']"/></td> -->
+                            <td><span t-esc="line['date'].split('-')[2] + '-' + line['date'].split('-')[1] + '-' + line['date'].split('-')[0]"/></td>
+                            <td>
+                                <span t-esc="line['name']"/>
+                            </td>
+                            <!-- Vérification des employées -->
+                            <td>
+                                <t t-if="not form.get('employee_id')">
+                                    <span t-esc="line['employee_id'][1]"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="not line['employee_id'] in my_list">
+                                        <t t-set="my_list" t-value="my_list + [line['employee_id']]"/>
+                                    </t>
+
+                                    <t t-if="len(my_list) != 1">
+                                        <span t-esc="line['employee_id'][1]"/>
+                                    </t>                                    
+                                </t> 
+                                
+                            </td>
+                            <td>
+                                <span t-esc="('{:,.0f}'.format(int(line['total_amount_orign'])).replace(',', ' '))"/>
+                            </td>
+                            <td t-if="form.get('etat') != 'rembourse'">
+                                <span t-esc="('{:,.0f}'.format(int(line['total_amount_company'])).replace(',', ' '))"/>
+                            </td>
+                            <td t-if="form.get('etat') != 'rembourse'">
+                                <!-- <span t-esc="('{:,.0f}'.format(int(line['montant_reste'])).replace(',', ' '))"/> -->
+                                <t t-if="line['total_amount_orign'] - line['total_amount_company'] > 0" >
+                                <span t-esc="('{:,.0f}'.format(int(line['total_amount_orign'] - line['total_amount_company'])).replace(',', ' '))"/>
+                                <!-- <t t-set="restant" t-value="restant + line['total_amount_orign'] - line['total_amount_company'] "/> -->
+                                </t>
+                                <t t-else="">
+
+                                </t>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <div class="row justify-content-end">
+                    <div class="col-4">
+                        <table class="table table-sm">
+                            <t t-set="total" t-value="0"/>
+                            <tr class="border-black">
+                                <t t-foreach="note_frais" t-as="cal">
+                                    <t t-set="total" t-value="total + cal['total_amount_orign']"/>
+                                </t>
+                                <td>
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="text-right">
+                                    <p><span t-esc="('{:,.0f}'.format(int(total)).replace(',', ' '))"/> FCFA</p>
+                                    <!-- <p> Verifions</p> -->
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <p>Date et signature<br/><br/></p>
+                
+            </t>
+        </t>
+    </template>
+
+</odoo>
+

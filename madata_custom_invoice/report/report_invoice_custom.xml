@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <data>
+        <template inherit_id='account.report_invoice_document' id='custom_report_invoice_document' >
+            <xpath expr="//div[@class='page']/h2" position='replace'>
+                 <div style="padding:0px; margin:0px;">   
+                    <table class="table table-sm" style="border-collapse: collapse;"> 
+                    <!-- <table class="table table-bordered" >  -->
+                        <tr> 
+                            <td style="border: none;"></td>
+                            <td style="border: none;"></td>
+                            <td class="text-right" style="border: 1px solid black;">Client : </td>
+                            <td style="border: 1px solid black;"> <span t-field="o.partner_id"/></td>
+                        </tr>
+                        <!-- <tr> 
+                            <td style="border: none;"></td>
+                            <td style="border: none;"></td>
+                            <td class="text-right" style="border: 1px solid black;">A l'attention de : </td>
+                            <td style="border: 1px solid black;"> <span t-field="o.attention"/> </td>
+                        </tr> -->
+                        <tr> 
+                            <td class="text-left" style="border: none;"> Abidjan le :</td>
+                            <td style="border: none;"><span t-field="o.invoice_date" t-options='{"widget": "date"}'/></td>
+                            <td class="text-right" style="border: 1px solid black;">Adresse : </td>
+                            <td style="border: 1px solid black;"> <span t-field="o.partner_id.street"/> <span t-field="o.partner_id.street2"/></td>
+                        </tr>
+                        <tr> 
+                            <td class="text-left" style="border: none;"> PROFORMA N° :</td>
+                            <td style="border: none;"><span t-field="o.invoice_origin"/></td>
+                            <!-- <td class="text-right" style="border: 1px solid black;">N° C.C : </td> -->
+                            <!-- <td style="border: 1px solid black;"> <span t-field="o.partner_id.code_cc"/> </td> -->
+                        </tr>
+                        <tr> 
+                            <td style="border: none;"></td>
+                            <td style="border: none;"></td>
+                            <td class="text-right" style="border: 1px solid black;">Contact : </td>
+                            <td style="border: 1px solid black;"> 
+                                <!-- <t t-if="o.telephone">
+                                    <span t-field="o.telephone"/>
+                                </t>  -->
+                                <!-- <t t-elif="o.partner_id.mobile">
+                                    <span t-field="o.partner_id.mobile"/>
+                                </t> 
+                                <t t-elif="o.partner_id.phone">
+                                    <span t-field="o.partner_id.phone"/>
+                                </t> -->
+                                <!-- <t t-elif="o.partner_id.phone and o.partner_id.mobile">
+                                    <p><span t-field="o.partner_id.phone"/> / <span t-field="o.partner_id.mobile"/></p>
+                                </t> -->
+                            </td>
+                        </tr>
+                    </table>  
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@class='page']/table/thead" position='replace'>
+                 <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-left" style="border: 1px solid black;">DESCRIPTION</th>
+                        <th name="th_quantity" class="text-center" style="border: 1px solid black;">QTE</th>
+                        <th name="th_priceunit" class="text-center" style="border: 1px solid black;">PRIX U.HT</th>
+                        <th name="th_discount" class="text-center" style="border: 1px solid black;">
+                            <span>%Rem</span>
+                        </th>
+                        <!-- <th name="th_taxes" class="text-right">Taxes</th> -->
+                        <th name="th_subtotal" class="text-center" style="border: 1px solid black;">
+                            <span groups="account.group_show_line_subtotals_tax_excluded">TOTAL HT</span>
+                            <span groups="account.group_show_line_subtotals_tax_included">TOTAL HT</span>
+                        </th>
+                    </tr>
+                </thead>
+            </xpath>
+            <xpath expr="//div[@class='page']/table/tbody" position='replace'>
+               <tbody class="sale_tbody">
+                    <t t-set="current_subtotal" t-value="0"/>
+                    <t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                    <t t-foreach="lines" t-as="line">
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                        <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                            <t t-if="not line.display_type">
+                                <td name="td_name" style="border-top: none; border-bottom: none; border-right: 1px solid black; border-left: 1px solid black;"><span t-field="line.name"/></td>
+                                <td name="td_quantity" class="text-right" style="border-top: none; border-bottom: none; border-right: 1px solid black; border-left: 1px solid black;">
+                                    <span t-field="line.quantity"/>
+                                </td>
+                                <td name="td_priceunit" class="text-right" style="border-top: none; border-bottom: none; border-right: 1px solid black; border-left: 1px solid black;">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <!-- <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line" style="border-top: none; border-bottom: none;">
+                                    <span t-field="line.discount"/>
+                                </td> -->
+                                <td class="text-right" style="border-top: none; border-bottom: none; border-right: 1px solid black; border-left: 1px solid black;">
+                                    <t t-if="line.discount" groups="product.group_discount_per_so_line">
+                                        <span t-field="line.discount"/>
+                                    </t>
+                                    <t t-else="">
+                                        <p></p>
+                                    </t>
+                                </td>
+                                <td name="td_subtotal" class="text-right o_price_total" style="border-top: none; border-bottom: none; border-right: 1px solid black; border-left: 1px solid black;">
+                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                </td>
+                            </t>
+                            <!-- <t t-if="line.display_type == 'line_section'">
+                                <td name="td_section_line" colspan="99" style="border-top: none; border-bottom: none; border-right: 1px solid black; border-left: 1px solid black;">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <t t-set="current_section" t-value="line"/>
+                                <t t-set="current_subtotal" t-value="0"/>
+                            </t>
+                            <t t-if="line.display_type == 'line_note'">
+                                <td name="td_note_line" colspan="99" style="border-top: none; border-bottom: none; border-right: 1px solid black; border-left: 1px solid black;">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t> -->
+                        </tr>
+                    </t>
+                    
+                    <tr>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                        <td style="border-right: 1px solid black; border-left: 1px solid black; border-top: none; border-bottom: none; padding: 12px; "></td>
+                    </tr>
+                    <tr> 
+                        <td style="border: 1px solid black;">
+                            <p>Arrêtée la présente proforma à la somme de <span t-field="o.ttc_lettre"/> francs CFA</p>
+                        </td>
+                        <td colspan="4" style="padding-bottom: 0px; margin: 0px; border: 1px solid black;">
+                            <table class="table" style="padding-bottom: 0px; margin: 0px;">
+                                <tr>
+                                    <td class="text-left" style="border: none; padding: 0px; margin: 0px;"> MONTANT HT :</td>
+                                    <td class="text-right" style="border: none; padding: 0px; margin: 0px;"> <span t-field="o.amount_untaxed"/> </td> 
+                                </tr>
+                                <tr>
+                                    <td class="text-left" style="border: none; padding: 0px; margin: 0px;"> MONTANT TVA :</td>
+                                    <td class="text-right" style="border: none; padding: 0px; margin: 0px;">
+                                        <t t-if="o.amount_tax">
+                                            <span t-field="o.amount_tax"/>
+                                        </t>
+                                        <t t-else="">
+                                            <p></p>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left" style="border: none; padding: 0px; margin: 0px;"> MONTANT TTC :</td>
+                                    <td class="text-right" style="border: none; padding: 0px; margin: 0px;"><span t-field="o.amount_total"/> </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </xpath>
+
+            <xpath expr="//div[@class='clearfix']" position='replace'>
+                    <table class="table" style="padding-bottom: 0px; margin: 0px;">
+                    <tr>
+                        <td class="text-left" style="border: none; padding: 0px; margin: 0px;"> Paiement :</td>
+                        <td style="border: none; padding: 0px; margin: 0px;"> 60% à la commande et 40% à la livraison </td>
+                        <td style="border: none; padding: 0px; margin: 0px;" rowspan="5">
+                            <img class="img" src="/accounting_payroll_custom/static/img/imagepub.png" border="1" height="150" width="300"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="border: none; padding: 0px; margin: 0px;"> Fichier :</td>
+                        <td style="border: none; padding: 0px; margin: 0px;"> <span/> </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="border: none; padding: 0px; margin: 0px;"> Date de facturation :</td>
+                        <td style="border: none; padding: 0px; margin: 0px;"> <span t-field="o.invoice_date"/> </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style="border: none; padding: 0px; margin: 0px;">Date d'échéance:</td>
+                        <td style="border: none; padding: 0px; margin: 0px;"><span t-field="o.invoice_payment_term_id"/>  </td>
+                    </tr>
+                    <!-- <tr>
+                        <td class="text-left" style="border: none; padding: 0px; margin: 0px;"> Remarque :</td>
+                        <td style="border: none; padding: 0px; margin: 0px;"> <span t-field="o.remarque"/> </td>
+                    </tr> -->
+                </table>
+                <p style="text-align: center;">
+                    Ce travail reste la propriété de IMAGE PUB jusqu'au solde complet de la facture
+                </p>
+            </xpath>
+
+            <xpath expr="//div[@class='page']/div[@id='informations']" position='replace'>
+              <span> </span>
+            </xpath>
+
+            <xpath expr="//t[@t-set='address']" position='replace'>
+              <span> </span>
+            </xpath>
+            <xpath expr="//p[@name='payment_communication']" position='replace'>
+              <span> </span>
+            </xpath>
+            <!-- <xpath expr="//div[@class='page']/p[@name='payment_communication']" position='replace'>
+               <span> </span>
+            </xpath>
+
+            <xpath expr="//div[@class='page']/p[@name='payment_term']" position='replace'>
+              <span name="th_quantity" class="text-left"><span> </span></span>
+            </xpath>
+            <xpath expr="//div[@class='page']/p[@name='note']" position='replace'>
+              <span name="th_quantity" class="text-left"><span> </span></span>
+            </xpath>
+            <xpath expr="//div[@class='page']/p[@name='incoterm']" position='replace'>
+              <span name="th_quantity" class="text-left"><span> </span></span>
+            </xpath>
+            <xpath expr="//div[@class='page']/div[@name='comment']" position='replace'>
+              <span name="th_quantity" class="text-left"><span> </span></span>
+            </xpath>
+            <xpath expr="//div[@class='page']/div[@id='qrcode']" position='replace'>
+              <span name="th_quantity" class="text-left"><span> </span></span>
+            </xpath>-->
+        </template>
+    </data>
+</odoo>

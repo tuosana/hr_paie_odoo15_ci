@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2022 Moussa SANGARE <psgmoussa@yahoo.fr>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<odoo>
+    <!-- <record id='choix_fournisseur_action' model='ir.actions.act_window'>
+        <field name="name">Choix Fournisseur</field>
+        <field name="res_model">choix.fournisseur</field>
+        <field name="view_mode">tree</field>
+    </record> -->
+    <data>
+
+    <record model="ir.actions.act_window" id="choix_fournisseur_act_window">
+        <field name="name">Choix Fournisseur</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">choix.fournisseur</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="choix_fournisseur_tree_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.ui.view" id="choix_fournisseur_tree_view">
+        <field name="name">choix.fournisseur.form</field>
+        <field name="model">choix.fournisseur</field>
+        <field name="arch" type="xml">
+            <form string="Choix d'un Fournisseur">
+                <field name="product_id"/>
+                    <tree string="Choix du Fournisseur">
+                        <field name="supplier_id"/>
+                        <field name="price"/>
+                        <field name="delay"/>
+                    </tree>
+                </field>
+                <footer>
+                    <button name="action_confirm" string="Valider" type="object" class="btn-primary" />
+                    or
+                    <button string="Annuler" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <data>
+</odoo>

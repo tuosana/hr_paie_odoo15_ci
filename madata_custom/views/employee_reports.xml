@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!--Form view hr employee template -->
+    <record id="view_hr_employee" model="ir.ui.view">
+        <field name="name">hr employee</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref='hr.view_employee_form' />
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='mobile_phone']" position="before">
+                <field name="civilite" required='1'/>
+                <field name="manager_job" invisible='1'/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Form view hr leave template -->
+    <record id="view_hr_leave_form" model="ir.ui.view">
+        <field name="name">hr leave form</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref='hr_holidays.hr_leave_view_form_manager' />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="date_repris" invisible='1'/>
+                <field name="today" invisible='1'/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="hr_leave_tree_view" model="ir.ui.view">
+        <field name="name">hr.leave.tree.inherit</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <button name="print_conges" string="Attestation de congés" type="object" class="btn-info"
+                    attrs="{'invisible': ['|',('state', '!=', 'validate'),('holiday_status_id', '!=', 1)]}"/>
+                <field name="today" invisible='1'/>
+                <field name="date_repris" invisible='1'/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+            

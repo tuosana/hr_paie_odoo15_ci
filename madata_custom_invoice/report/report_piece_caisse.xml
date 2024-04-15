@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="report_piece_caisse" model="ir.actions.report">
+        <field name="name">Pièce de caisse</field>
+        <field name="model">hr.expense.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">madata_custom_invoice.report_piece_caisse_id</field>
+        <field name="report_file">madata_custom_invoice.report_piece_caisse_id</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    <template id="report_piece_caisse_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="os_structure"/>
+                        <table style="width:100%;" align="center">
+                        <tr><td>
+                            <div align="center">
+                                <table class="table table-condensed" style="border: 2px solid black !important; text-align:center;" >
+                                    <tr><td>
+                                        <h2 style="color: #000000;"> PIECE DE CAISSE N° <strong><span t-field="o.numero_seq"/></strong></h2>
+                                    </td></tr>
+                                </table>
+                            </div>
+                            <br/><br/>
+                            <t t-if="o.employee_id">
+                                <table align="right">
+                                    <tr>
+                                        <td><p>Date : <span t-field="o.date"/></p></td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div style="font-size: 18px; font-family: Arial; text-align:justify; margin: 0px;" >                          
+                                    <p>Bénéficiaire : <strong><span t-field="o.employee_id"/></strong></p>
+                                    <p>Montant (en chiffre): <strong><span t-esc="('{:,.0f}'.format(int(o.total_amount_company)).replace(',', ' '))"/> FCFA</strong></p>
+                                    <p>Montant (en lettre) : <strong><span t-field="o.montant_lettre"/> FCFA</strong></p>
+                                    <p>Objet : <strong><span t-field="o.name"/></strong></p>
+                                </div><br/>
+                                <div align="center">
+                                    <table  class="table table-condensed" style="text-align:center;width:100%; padding:0px; margin:0px;" >
+                                    <tr>
+                                        <td style="text-align:left !important;"><strong><u>DIRECTION</u></strong></td>
+                                        <td><strong><u>CAISSE</u></strong></td>
+                                        <td style="text-align:right !important;"><strong><u>BENEFICIAIRE</u></strong></td>
+                                    </tr>
+                                    </table>
+                                </div>
+                            </t>
+                        </td>
+                        </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

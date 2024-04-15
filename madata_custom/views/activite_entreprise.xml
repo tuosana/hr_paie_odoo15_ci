@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <record id='activite_entreprise_action' model='ir.actions.act_window'>
+            <field name="name">Activité</field>
+            <field name="res_model">activite.entreprise</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- <menuitem name="Categorie" id="secteur_activite_cat_menu" parent="contacts.res_partner_menu_config" groups="base.group_user" sequence="20"/> -->
+        <!-- <menuitem name="Secteur d'Activite" id="secteur_activite_menu" parent="secteur_activite_cat_menu" action="secteur_activite_action" groups="base.group_user" sequence="1"/> -->
+        <!-- <menuitem name="Activite" id="activite_entreprise_menu" parent="secteur_activite_cat_menu" action="activite_entreprise_action" groups="base.group_user" sequence="3"/> -->
+
+
+        <record id="activite_entreprise_view_form" model="ir.ui.view">
+        <field name="name">Activités</field>
+        <field name="model">activite.entreprise</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="secteur_act"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+        <record id="activite_entreprise_tree" model="ir.ui.view">
+            <field name="name">Activités</field>
+            <field name="model">activite.entreprise</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="secteur_act"/>
+                </tree>
+            </field>
+        </record>
+        
+    </odoo>

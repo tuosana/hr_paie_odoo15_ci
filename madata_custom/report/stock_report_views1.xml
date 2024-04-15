@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_picking_bm" model="ir.actions.report">
+        <field name="name">Bon de mouvement</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">madata_custom.report_delivery_document_bm</field>
+        <field name="report_file">madata_custom.report_delivery_document_bm</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_picking_bl" model="ir.actions.report">
+        <field name="name">Bon de livraison</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">madata_custom.report_delivery_document_bl</field>
+        <field name="report_file">madata_custom.report_delivery_document_bl</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+    <!-- Delete button imprimer in menu -->
+    <record id="stock.action_report_picking" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+</odoo>

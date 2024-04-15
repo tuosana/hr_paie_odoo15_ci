@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="account_inherited_view_order_form" model="ir.ui.view">
+    <field name="name">account.move.form</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+
+      <!-- <xpath expr="//button[@name='button_draft']" position='after'> 
+         <button name="delete_donnee" string="Active lettrage" type="object" groups="account.group_account_invoice" data-hotkey="q"/>
+      </xpath> -->
+
+      <xpath expr="//field[@name='partner_id']" position='after'>   
+         <field name="nu_c_client" attrs="{'invisible': [('move_type', '=', 'entry')]}"/>
+         <field name="nu_c_contribuable" attrs="{'invisible': [('move_type', '=', 'entry')]}"/>
+         <field name="tva_suspendue" invisible="1"/>
+         <!-- <field name="creer_facture_acompte" attrs="{'invisible': [('move_type', '=', 'entry')]}"/> -->
+         <!-- <field name="facture_acompte" string='Facture Acompte' class="oe_inline" widget="radio" attrs="{'invisible': ['|', ('creer_facture_acompte', '!=', True), ('move_type', '=', 'entry')]}"/>
+         <label for="acompte_pourcentage" attrs="{'invisible': ['|', ('creer_facture_acompte', '!=', True), ('facture_acompte', 'not in', ('fixed','percentage'))]}"/>
+         <div attrs="{'invisible': ['|',('creer_facture_acompte', '!=', True), ('facture_acompte', 'not in', ('fixed','percentage'))]}"
+               id="payment_method_details">
+               <field name="currency_id" invisible="1"/>
+               <field name="acompte_montant_fixe"
+                  attrs="{'required': [('facture_acompte', '=', 'fixed')], 'invisible': ['|', ('creer_facture_acompte', '!=', True),('facture_acompte', '!=','fixed')]}" class="oe_inline"/>
+               <field name="acompte_pourcentage"
+                  attrs="{'required': [('facture_acompte', '=', 'percentage')], 'invisible': ['|', ('creer_facture_acompte', '!=', True),('facture_acompte', '!=', 'percentage')]}" class="oe_inline"/>
+               <span
+                  attrs="{'invisible': ['|', ('creer_facture_acompte', '!=', True), ('facture_acompte', '!=', 'percentage')]}" class="oe_inline">%</span>
+         </div> -->
+         <field name="id_central" invisible="1"/>
+         <!-- <field name="votre_bc" attrs="{'invisible': [('move_type', '=', 'entry')]}"/> -->
+          <field name="objet" attrs="{'invisible': [('move_type', '=', 'entry')]}"/>
+          <!-- <field name="delai_a_reglement" string='Délai de règlement :' placeholder="Délai de règlement" attrs="{'invisible': [('move_type', '=', 'entry')]}"/> -->
+      </xpath>
+      <xpath expr="//field[@name='amount_residual']" position='after'> 
+         <br/>
+         <!-- <group class="oe_subtotal_footer oe_right" attrs="{'invisible': ['|', ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')),('payment_state' ,'=', 'invoicing_legacy')]}"> -->
+            <!-- <field name="montant_acompte_payer" decoration-bf="1" class="oe_subtotal_footer_separator" string="Acompte" attrs="{'invisible': ['|', ('creer_facture_acompte', '!=', True), ('tva_suspendue', '!=', False)]}"/>
+            <field name="montant_acompte_payer" decoration-bf="1" class="oe_subtotal_footer_separator" string="Acompte (TTC Avec TVA suspendue)" attrs="{'invisible': ['|', ('creer_facture_acompte', '!=', True), ('tva_suspendue', '!=', True)]}"/> -->
+            <!-- <field name="reste_montant_payer" decoration-bf="1" class="oe_subtotal_footer_separator" string='Reste à payer'  attrs="{'invisible': ['|', ('creer_facture_acompte', '!=', True), ('tva_suspendue', '!=', False)]}"/>
+            <field name="reste_montant_payer_tva_suspendue" decoration-bf="1" class="oe_subtotal_footer_separator" string='Reste à payer (Avec TVA suspendue)' attrs="{'invisible': ['|', ('creer_facture_acompte', '!=', True), ('tva_suspendue', '!=', True)]}"/> -->
+         <!-- </group> -->
+      </xpath>
+      <xpath expr="//field[@name='tax_ids']" position='attributes'> 
+         <attribute name="attrs">{ 'column_invisible' : [('parent.tva_suspendue', '=', True)]}</attribute>         
+      </xpath>
+      <!-- <xpath expr="//group[@colspan='3']" position='replace'> 
+         <br/>
+        <group colspan="4">
+               <field name="delai_a_reglement" string='Délai de règlement :' placeholder="Délai de règlement" attrs="{'invisible': [('move_type', '=', 'entry')]}"/>
+         </group>
+         <group colspan="4">
+
+         </group>
+      </xpath> -->
+         
+      <!-- <xpath expr="//field[@name='payment_reference']" position='after'> 
+         <field name="objet"/>
+      </xpath> -->
+      <!-- <xpath expr="//field[@name='invoice_date']" position='before'> 
+         <field name="tva_suspendue"/>
+      </xpath> -->
+    </field>
+</record>
+
+<!-- <record id="view_order_tree" model="ir.ui.view">
+    <field name="name">account.move.tree</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+    <field name="arch" type="xml">
+      <xpath expr="/tree/field[@name='activity_ids']" position='attributes'>
+            <attribute name = "invisible">1</attribute>
+            </xpath>
+      <xpath expr="/tree/field[@name='state']" position='attributes'>
+            <attribute name = "invisible">1</attribute>
+      </xpath>
+      <xpath expr="/tree/field[@name='create_date']" position='after'>
+         <field name="date_affaire"/>
+      </xpath>
+    </field>
+</record> -->
+
+</odoo>

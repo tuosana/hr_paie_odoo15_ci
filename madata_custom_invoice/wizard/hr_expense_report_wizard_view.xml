@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_hr_expense_wizard" model="ir.actions.report">
+        <field name="name">Rapport notes de frais</field>
+        <field name="model">hr.expense.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">madata_custom_invoice.hr_expense_report_wizard_action</field>
+        <field name="report_file">madata_custom_invoice.hr_expense_report_wizard_action</field>
+        <field name="binding_model_id" ref="model_hr_expense_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    <template id='hr_expense_report_wizard_action'>
+        <t t-call='web.html_container'>
+            <t t-call='web.external_layout'>
+             <div class='oe_structure'/>
+              <div class='text-center'>
+                <h2>Rapport notes de frais</h2>
+                <br/>
+              </div>
+            <div class="row mt32">
+                <div class="col-4">
+                    <t t-if="form_data.get('employee_id')">
+                        <strong>Employé :</strong>
+                        <span>
+                            <t t-esc="form_data['employee_name']"/>
+                        </span>
+                    </t>
+                </div>
+                
+                <div class="col-4">
+                    <p>
+                        <t t-if="form_data.get('date_debut')"><strong>Date de :</strong> <span t-esc="form_data['date_debut']"/><br/></t>
+                        <t t-if="form_data.get('date_fin')"><strong>Date au :</strong> <span t-esc="form_data['date_fin']"/><br/></t>
+                    </p>
+                </div>
+                <div class="col-4">
+                    <p>
+                        <t t-if="form_data.get('state')=='draft'"><strong>État :</strong> <span>Accepté par le responsable</span><br/></t>
+                        <t t-if="form_data.get('state')=='approved'"><strong>État :</strong> <span>Confirmé par le comptable</span><br/></t>
+
+                        <t t-if="form_data.get('payment_mode')=='company_account'"><strong>Notes de frais :</strong> <span>Demande</span><br/></t>
+                        <t t-if="form_data.get('payment_mode')=='own_account'"><strong>Notes de frais :</strong> <span>Remboursement</span><br/></t>
+                    </p>
+                </div>
+            </div>
+
+              <br/>
+              <table class="table table-sm o_main_table">
+
+                        <thead style="display: table-row-group">
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Article</th>
+                                <t t-if="form_data.get('employee_id')">
+                                 <!-- <th></th> -->
+                                </t>
+                                <t t-else="">
+                                    <th>Employé</th>
+                                </t>
+                                <!-- <th>Paiement par</th> -->
+                                <th class="text-right">Prix</th>
+                                <th class="text-right" t-if="form_data.get('payment_mode')=='company_account'">
+                                  Restant
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="totaux" t-value="0"/>
+                            <t t-set="restant" t-value="0"/>
+                            <tr t-foreach="notes_frais" t-as="line">
+                                <td><span t-esc="line['date'].split('-')[2] + '-' + line['date'].split('-')[1] + '-' + line['date'].split('-')[0]"/></td>
+                                <td>
+                                    <span t-esc="line['name']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['product_id'][1]"/>
+                                </td>
+                                
+                                <t t-if="form_data.get('employee_id')">
+                                    <!-- <td>
+                                    </td> -->
+                                </t>
+                                <t t-else="">
+                                    <td>
+                                     <span t-esc="line['employee_id'][1]"/>
+                                    </td>
+                                </t>
+                                <!-- t-if="o.is_multiple_currency" -->
+                                <td class="text-right">
+                                    <span t-esc="('{:,.0f}'.format(int(line['total_amount_company'])).replace(',', ' '))"/>
+                                </td>
+
+                                <td t-if="form_data.get('payment_mode')=='company_account'" class="text-right">
+                                     <t t-if="line['total_amount_orign'] - line['total_amount_company'] > 0" >
+                                        <span t-esc="('{:,.0f}'.format(int(line['total_amount_orign'] - line['total_amount_company'])).replace(',', ' '))"/>
+                                        <!-- <t t-set="restant" t-value="restant + line['total_amount_orign'] - line['total_amount_company'] "/> -->
+                                     </t>
+                                     <t t-else="">
+
+                                     </t>
+                                </td>
+                                <t t-set="totaux" t-value="totaux + line['total_amount_company']"/>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row justify-content-end">
+                        <div class="col-4">
+                            <table class="table table-sm">
+                                <tr class="border-black">
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right">
+                                        <span t-esc=" ('{:,.0f}'.format(int(totaux)).replace(',', ' '))" />
+                                        <span> FCFA</span>
+                                        <!-- t-options='{"widget": "monetary", "display_currency": o.currency_id}' -->
+                                    </td>
+                                </tr>
+                                <tr t-if="form_data.get('payment_mode')=='company_account'" class="border-black">
+                                    <td><strong>Restant</strong></td>
+                                    <td class="text-right">
+                                        <span t-esc=" ('{:,.0f}'.format(int(restant)).replace(',', ' '))" />
+                                        <span> FCFA</span>
+                                        <!-- t-options='{"widget": "monetary", "display_currency": o.currency_id}' -->
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <p>Certifié et conforme,<br/>(Date et signature).<br/><br/></p>
+            </t>
+        </t>
+    </template> 
+
+</odoo>

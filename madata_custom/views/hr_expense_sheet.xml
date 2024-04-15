@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+   <record id="view_expense_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.form.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field style="color:red;" name="notes_frais_r_g" string="Retenu sur le salaire"
+                attrs="{'readonly': [('state', '!=', 'approve')],'invisible': ['|',('payment_mode', '!=', 'company_account'),('state', 'not in', ('approve','done'))]}"/>
+                
+                <field style="color:red;" name="notes_frais_r_g" string="Gain sur le salaire"
+                attrs="{'readonly': [('state', '!=', 'approve')],'invisible': ['|',('payment_mode', '!=', 'own_account'),('state', 'not in', ('approve','post','done'))]}"/>
+                
+                <field style="color:red;" name="amount_available" string="Montant mis à votre disposition" attrs="{'readonly': [('state', '!=', 'draft')],'invisible': ['|',('payment_mode', '!=', 'company_account'),('state', '!=', 'draft')]}"/>
+                <field style="color:red;" name="amount_available" string="Montant mis à sa disposition" attrs="{'readonly': [('state', '!=', 'draft')],'invisible': ['|',('payment_mode', '!=', 'company_account'),('state', 'not in', ('approve','submit'))]}"/>
+                <br/>
+                <field style="color:red;" name="amount_withheld" 
+                attrs="{'readonly': [('state', '!=', 'approve')],'invisible': ['|',('payment_mode', '!=', 'company_account'),('state', 'not in', ('approve','done'))]}"/>
+                
+            </xpath>
+
+            <xpath expr="//button[@name='action_submit_sheet']" position="attributes">
+                <attribute name='class'>oe_read_only oe_highlight o_expense_sheet_submit</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_sheet_move_create']" position="attributes">
+                <attribute name='class'>oe_read_only oe_highlight o_expense_sheet_approve</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_register_payment']" position="attributes">
+                <attribute name='class'>oe_read_only oe_highlight o_expense_sheet_post</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_unpost']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='reset_expense_sheets']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+
+            <xpath expr="//button[@states='submit,approve']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>  

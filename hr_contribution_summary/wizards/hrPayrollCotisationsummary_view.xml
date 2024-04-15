@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<data>
+
+    <record id="hr_payroll_cotisation_summary_view" model="ir.ui.view">
+        <field name="name">hr_payroll.cotisation_summary.form</field>
+        <field name="model">hr_payroll.cotisation_summary</field>
+        <field name="arch" type="xml">
+            <form string="Résumé des cotisations">
+                <group >
+                    <group>
+                        <field name="date_from" />
+                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                    </group>
+                    <group>
+                        <field name="date_to" />
+                        <field name="type_employe" widget="radio"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Exporter en PDF" name="export_to_pdf" type="object" class="btn-primary"/>
+                    <button string="Exporter en Excel" name="export_to_excel" type="object" class="btn-primary"
+                        context="{'xls_export':1}" icon="fa-download"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_payroll_contribution_summary_view" model="ir.actions.act_window">
+        <field name="name">Résumé des cotisations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr_payroll.cotisation_summary</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="hr_payroll_cotisation_summary_view" />
+    </record>
+
+    <menuitem id="hr_payroll_contribution_summary_menu" name="Résumé des cotisations" sequence="2" parent="hr_payroll_ci.hr_payroll_rapport_ci_menu"
+            action="action_hr_payroll_contribution_summary_view"/>
+
+</data>
+</odoo>

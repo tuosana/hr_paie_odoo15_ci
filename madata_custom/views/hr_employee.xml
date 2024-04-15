@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+   <record id="view_employee_form_leave_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.leave.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='mobile_phone']" position="before">
+                <field name="nbj_acquis" invisible="1" force_save="1"/>
+                <field name="nbj_pris" invisible="1" force_save="1"/>
+                <field name="nbj_restants" invisible="1" force_save="1"/>
+                <field name="nbh_travailler" invisible="1" force_save="1"/>
+                <!-- <field name="employee_conges" readonly="1" force_save="1"/> -->
+                <field name="last_three_leaves" invisible="1" force_save="1"/>
+            </xpath>
+            <xpath expr="//field[@name='identification_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='matricule_cnps']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='job_title']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='start_date']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <!-- <xpath expr="//field[@name='end_date']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath> -->
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='leave_manager_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='job_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>  

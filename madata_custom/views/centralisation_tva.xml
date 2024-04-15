@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <record id='centralisation_tva_action' model='ir.actions.act_window'>
+            <field name="name">Centralisation TVA</field>
+            <field name="res_model">centralisation.tva</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem name="Centralisation" id="centralisation_menu" parent="account.menu_finance_entries" groups="account.group_account_user,account.group_account_manager" sequence="30"/>
+        <menuitem name="Centralisation TVA" id="centralisation_tva_menu" parent="centralisation_menu" action="centralisation_tva_action" groups="account.group_account_user,account.group_account_manager" sequence="1"/>
+
+        <!-- <menuitem
+        id="menu_tax_balances"
+        name="Taxes Balance"
+        parent="account.menu_finance_reports"
+        groups="account.group_account_user,account.group_account_manager"
+    />
+    <menuitem
+        action="action_open_tax_balances"
+        id="menu_action_open_tax_balances"
+        parent="menu_tax_balances"
+        groups="account.group_account_user,account.group_account_manager" -->
+        <record id="centralisation_tva_view_form" model="ir.ui.view">
+            <field name="name">Centralisation TVA</field>
+            <field name="model">centralisation.tva</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!-- <button name="action_centraliser" class="btn-warning oe_read_only" string="Centraliser" type="object" attrs="{'invisible': [('nb_pending', '=', 1),('state', '=', 'draft')]}"/> -->
+                        <button string="Centraliser" name="action_centraliser" type="object" class="btn btn-warning oe_read_only" attrs="{'invisible': ['|',('state', 'not in', ('draft','progress')),'&amp;',('state', '=', 'draft'),('nb_pending', '=', 1)]}"/>
+                        <button string="Consulter" name="action_centraliser" type="object" class="btn btn-success oe_read_only" attrs="{'invisible': [('state', 'in', ('draft','progress'))]}"/>
+                        
+                        
+                        <!-- <button string="Centraliser" name="action_centraliser" type="object" class="btn btn-warning oe_read_only" attrs="{'invisible': [('state', '=', 'draft'),('nb_pending', '=', 1)]}"/> -->
+                        <!-- <button string="Consulter" name="action_centraliser" type="object" class="btn btn-success oe_read_only" attrs="{'invisible': [('state', '=', 'draft')]}"/> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,progress,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="nombre_annee" invisible='1'/> 
+                                <field name="nb_pending" invisible='1'/>
+                                <field name="years" force_save="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <!-- <field name="months" force_save="1"/> -->
+                                <field name="months" string="Mois"  attrs="{'invisible': [('nombre_annee', '!=', 0)],'readonly': [('state', '!=', 'draft')]}" force_save="1"/>
+                                <field name="months_now" string="Mois" attrs="{'invisible': [('nombre_annee', '!=', 1)],'readonly': [('state', '!=', 'draft')]}" force_save="1"/>
+                                <field name="jrs_fin" invisible='1' force_save="1"/>
+                                <field name="conct_date" string='Date Concat' invisible='1' force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="from_date" force_save="1"/>
+                                <field name="to_date" force_save="1"/>
+                            </group>
+                            <!-- <group>
+                                <button name="action_tva" class="btn-success" string="Determiner TVA" type="object"/>
+                            </group> -->
+                            <group>
+                                <field name="tva_achat" style="color:red; font-weight: bold" force_save="1"/>
+                                <field name="tva_vente" style="color:red; font-weight: bold" force_save="1"/>
+                                <field name="tva_due" style="color:red; font-weight: bold" force_save="1"/>
+                            </group>
+                            <!-- <field name="state"/> -->
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="centralisation_tva_tree" model="ir.ui.view">
+            <field name="name">Centralisation TVA</field>
+            <field name="model">centralisation.tva</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="nb_pending" invisible='1'/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="tva_achat" sum="Total TVA Achat"/>
+                    <field name="tva_vente" sum="Total TVA Vente"/>
+                    <field name="tva_due" sum="Total TVA Due/Reporter"/>
+                    <field name="ref_ecriture"/>
+                    <field name="state" string="Etat" widget="badge" decoration-danger="state == 'draft'" decoration-warning="state == 'progress'" decoration-info="state == 'done'"/>
+                    <!-- <button name="action_centraliser" class="btn-warning" string="Centraliser" type="object" attrs="{'invisible': [('nb_pending', '=', 1),('state', '=', 'draft')]}"/> -->
+                    <!-- <button string="Consulter" name="_color_button" class="btn btn-success oe_read_only" attrs="{'invisible': [('state', 'not in', ('draft','progress'))]}"/> -->
+                    <!-- <button string="Centraliser" name="action_centraliser" class="btn btn-warning" attrs="{'invisible': [('state', '!=', 'draft'),('nb_pending', '=', 1)]}"/>
+                    <button string="Consulter" name="action_centraliser" class="btn btn-success oe_read_only" attrs="{'invisible': [('state', '=', 'done')]}"/> -->
+                    
+                    <button string="Centraliser" name="action_centraliser" type="object" class="btn btn-warning oe_read_only" attrs="{'invisible': ['|',('state', 'not in', ('draft','progress')),'&amp;',('state', '=', 'draft'),('nb_pending', '=', 1)]}"/>
+                    <button string="Consulter" name="action_centraliser" type="object" class="btn btn-success oe_read_only" attrs="{'invisible': [('state', 'in', ('draft','progress'))]}"/>
+                        
+                    <field name="years" invisible='1'/>
+                    <field name="months" invisible='1'/>
+                    <field name="jrs_fin" invisible='1' />
+                    <field name="conct_date" invisible='1'/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Parametrage Centralisation -->
+        <record id="centralisation_parametrage_view_form" model="ir.ui.view">
+            <field name="name">Parametrage Centralisation</field>
+            <field name="model">centralisation.parametrage</field>
+            <field name="arch" type="xml"> 
+                <form string="Tva">  
+                    <group>
+                        <group>
+                            <field name="tva_vente" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                            <field name="tva_achat" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                        </group>
+                        <group>
+                            <field name="tva_due" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                            <field name="tva_reporte" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                            <field name="journal_tva" domain="[('type','=','general')]"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="centralisation_parametrage_view_tree" model="ir.ui.view">
+            <field name="name">Parametrage Centralisation</field>
+            <field name="model">centralisation.parametrage</field>
+            <field name="arch" type="xml"> 
+                <tree string="parametrage" editable="bottom">
+                    <field name="tva_vente" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                    <field name="tva_achat" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                    <field name="tva_due" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                    <field name="tva_reporte" domain="['|',('name','ilike','t.v.a'),('name','ilike','tva')]"/>
+                    <field name="journal_tva" domain="[('type','=','general')]"/>
+                </tree>               
+            </field>
+        </record>
+        <record id='centralisation_parametrage_action' model='ir.actions.act_window'>
+            <field name="name">Parametrage Centralisation</field>
+            <field name="res_model">centralisation.parametrage</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Parametrage Centralisation 
+                </p>
+            </field>
+        </record>
+
+            <menuitem name="Centralisation" id="centralisation_parametrage_menu" parent="account.menu_finance_configuration" groups="base.group_user" sequence="50"/>
+            <menuitem name="Parametrage" id="centralisation_parametrage_id" parent="centralisation_parametrage_menu" action="centralisation_parametrage_action" groups="base.group_user" sequence="2"/>
+        
+    </odoo>

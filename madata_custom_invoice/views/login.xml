@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <data>
+        <template inherit_id='web.login' id='login_manager'>
+            <xpath expr="//label[@for='db']" position='replace'>
+                <label for="db" class="col-form-label">Identifiant</label>
+            </xpath>
+
+            <xpath expr="//input[@name='db']" position='replace'>
+              <input type="text" name="db" t-att-value="request.db" id="db" t-attf-class="form-control #{'form-control-sm' if form_small else ''}" required="required"/>
+            </xpath>
+            <xpath expr="//span[@class='input-group-append']" position='replace'>
+              <span> </span>
+            </xpath>
+            <xpath expr="//button[@name='redirect']" position='replace'>
+              <span> </span>
+            </xpath>
+            <!-- <t t-if="debug">
+                <button type="submit" name="redirect" value="/web/become" class="btn btn-link btn-sm btn-block">Log in as superuser</button>
+            </t> -->
+        </template>
+
+        <template id="auth_signup_reset_pwd" inherit_id="auth_signup.login" name="Sign up - Reset Password">
+            <xpath expr="//div[@class='justify-content-between mt-2 d-flex small']" position="replace">
+              <span> </span>
+            </xpath>
+        </template>
+
+        <template id="auth_signup_reset_pwd" inherit_id="auth_signup.login" name="Sign up - Reset Password">
+            <xpath expr="//div[@class='justify-content-between mt-2 d-flex small']" position="replace">
+              <span> </span>
+            </xpath>
+        </template>
+
+        <template inherit_id="web.login_layout" id="login_layout_manage" name="Login Layout manage">
+            <xpath expr="//div[@class='text-center small mt-4 pt-3 border-top']" position="replace">
+              <span> </span>
+            </xpath>
+        </template>
+    </data>
+</odoo>
+
+<!-- <span class="input-group-append">
+    <a role="button" href="/web/database/selector" class="btn btn-secondary">Select <i class="fa fa-database" role="img" aria-label="Database" title="Database"></i></a>
+</span> -->

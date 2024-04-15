@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+  <!-- Form view of account analytic account -->
+   <record id="view_account_analytic_form_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.account.form.inherit</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='currency_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='group_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="attributes">
+                <attribute name='required'>1</attribute>
+                <attribute name='string'>Code</attribute>
+            </xpath>
+            
+            <xpath expr="//group/group[1]" position="after">
+                <group>
+                  <field name="name" string="Libellé"/>                
+                </group>
+            </xpath>
+            <xpath expr="//sheet/group" position="before">
+                <group>
+                    <field name="account_analytic_axe" required="1"/>
+                    <field name="account_analytic_family" required="1" domain="[('account_analytic_axe','=',account_analytic_axe)]"/>
+                    <field name="group_id" required="1" string="Nature" domain="[('account_analytic_family','=',account_analytic_family)]"/>                
+                </group>
+            </xpath>
+            <xpath expr="//div[@class='oe_title']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+  <!-- Tree view of account analytic account -->
+   <record id="view_account_analytic_tree_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.account.tree.inherit</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="attributes">
+                <attribute name='string'>Code</attribute>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="group_id" string="Nature"/>
+            </xpath>
+            <xpath expr="//field[@name='debit']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='credit']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='balance']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+  <!-- Form view of account analytic nature -->
+    <record id="view_account_analytic_group_form_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.group.form.inherit</field>
+        <!-- <field name="name">Nature de comptes analytiques</field> -->
+        <field name="model">account.analytic.group</field>
+        <field name="inherit_id" ref="analytic.account_analytic_group_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='description']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <group>
+                    <field name="account_analytic_axe" required="1"/>
+                    <field name="account_analytic_family" required="1" domain="[('account_analytic_axe','=',account_analytic_axe)]"/>
+                    <field name="code" string='Code' required="1"/>
+                </group>
+                <!-- <group>
+                    <group>
+                        
+                    </group>
+                    <group>
+                        <field name="name" string='Libellé'/>
+                        <field name="description" string='Observation'/>
+                    </group>
+                </group> -->
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <group>
+                    <field name="name" string='Libellé'/>
+                    <field name="description" string='Observation'/>
+                </group>
+                <!-- <group>
+                    <group>
+                        
+                    </group>
+                    <group>
+                        <field name="name" string='Libellé'/>
+                        <field name="description" string='Observation'/>
+                    </group>
+                </group> -->
+            </xpath>
+            
+        </field>
+    </record>
+
+  <!-- Tree view of account analytic nature -->
+    <record id="view_account_analytic_group_tree_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.group.tree.inherit</field>
+        <!-- <field name="name">Nature de comptes analytiques</field> -->
+        <field name="model">account.analytic.group</field>
+        <field name="inherit_id" ref="analytic.account_analytic_group_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="code"/>
+                <field name="account_analytic_family"/>
+                <field name="description" string="Observation"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Form view of account analytic family -->
+    <record id="famille_anal_view_form" model="ir.ui.view">
+        <field name="name">Famille de comptes analytiques</field>
+        <field name="model">account.analytic.family</field>
+        <field name="arch" type="xml">
+            <form string="Famille">
+              <sheet>
+                <group name="famille_analytique">
+                   <group>
+                     <field name="code" required="1"/>
+                   </group>
+                   <group>
+                     <field name="libelle" required="1"/>
+                   </group>  
+                </group>
+                <group name="famille_analytique">
+                   <group>
+                     <field name="account_analytic_axe" required="1"/>
+                   </group>
+                   <group>
+                      <field name="description"/>                   
+                   </group>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of account analytic family -->
+    <record id="famille_anal_view_tree" model="ir.ui.view">
+        <field name="name">Famille de comptes analytiques</field>
+        <field name="model">account.analytic.family</field>
+        <field name="arch" type="xml">
+            <tree string="Famille">
+                <field name="code"/>
+                <field name="libelle"/>
+                <field name="description"/>
+                <field name="account_analytic_axe"/>
+            </tree>              
+        </field>
+    </record>
+
+    <!-- Form view of account analytic Axe -->
+    <record id="axe_anal_view_form" model="ir.ui.view">
+        <field name="name">Axe de comptes analytiques</field>
+        <field name="model">account.analytic.axe</field>
+        <field name="arch" type="xml">
+            <form string="Famille">
+              <sheet>
+                <group name="Axe Analytique">
+                   <field name="axe" required="1"/>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of account analytic Axe -->
+    <record id="axe_anal_view_tree" model="ir.ui.view">
+        <field name="name">Axe Analytique</field>
+        <field name="model">account.analytic.axe</field>
+        <field name="arch" type="xml">
+            <tree string="Axe Analytique">
+                <field name="axe"/>
+            </tree>              
+        </field>
+    </record>
+
+
+    <!-- Windows view of account analytic family -->
+    <record id='famille_anal_action' model='ir.actions.act_window'>
+        <field name="name">Famille de comptes analytiques</field>
+        <field name="res_model">account.analytic.family</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Famille de comptes analytiques
+            </p>
+        </field>
+    </record> 
+
+    <!-- Windows view of account analytic family -->
+    <record id='axe_anal_action' model='ir.actions.act_window'>
+        <field name="name">Axe analytiques</field>
+        <field name="res_model">account.analytic.axe</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Axe Analytiques
+            </p>
+        </field>
+    </record> 
+
+    <record id="account_analytic_nature_id" model="ir.actions.act_window">
+        <field name="name">Nature Compte Analytique</field>
+        <field name="res_model">account.analytic.group</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Nature Compte Analytique
+            </p>
+        </field>
+    </record>
+ 
+    <!-- Modifier la sequence de compte analytique -->
+    <record id="account.account_analytic_def_account" model="ir.ui.menu">
+        <field name="sequence">4</field>
+    </record>
+ 
+    <!-- Fermeture des menuitems -->
+    <record id="make_invisible" model="res.groups">
+        <field name="name">Invisible</field>
+    </record>
+    <record model="ir.ui.menu" id="account.menu_analytic_default_list">
+        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+    </record>
+    <record model="ir.ui.menu" id="account.account_analytic_group_menu">
+        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+    </record>
+    
+    <menuitem name="Axe Analytique" id="account_analytic_axe_menu" parent="account.menu_analytic_accounting" action="axe_anal_action" groups="base.group_user" sequence="1"/>
+    <menuitem name="Famille de comptes analytiques" id="account_analytic_family_menu" parent="account.menu_analytic_accounting" action="famille_anal_action" groups="base.group_user" sequence="2"/>
+    <menuitem name="Nature de comptes analytiques" id="account_analytic_nature_menu" parent="account.menu_analytic_accounting" action="analytic.account_analytic_group_action" groups="base.group_user" sequence="3"/>
+    <menuitem name="Nature Compte Analytique" id="account_analytic_nature_menu" parent="account.menu_analytic_accounting" action="account_analytic_nature_id" groups="base.group_user" sequence="3"/>
+<!-- 
+    <record model="ir.ui.menu" id="account.account_analytic_group_menu">
+        <field name="name">Nature de comptes analytiques</field>
+    </record> -->
+
+
+
+</odoo>  

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>  
+    <!-- Form  view of modele sale order -->
+    <record id="view_saleform_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_quotation_send']" position="after">
+             <!-- <button name="action_share_whatsapp" string="Par"/> -->
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+             <field name="descri_cust" readonly="1"/>
+             <field name="ca_prev" readonly="1"/>
+             <field name="budget_achat" readonly="1"/>
+             <field name="mont_prev" readonly="1"/>
+             <field name="user_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+            </xpath>
+        </field>
+    </record>   
+</odoo>  

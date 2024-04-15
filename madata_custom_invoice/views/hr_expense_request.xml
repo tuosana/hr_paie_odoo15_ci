@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_expense_request_view_form" model="ir.ui.view">
+        <field name="name">hr.expense.request.view.form</field>
+        <field name="model">hr.expense.request</field>
+        <field name="arch" type="xml">
+            <form string="Expenses" class="o_expense_form" js_class="hr_expense_form_view">
+            <header>
+             <button name="action_confirm" type="object" string="Soumettre au Responssable" class="btn-success oe_read_only" attrs="{'invisible': [('state', '!=', 'draft')]}" data-hotkey="w"/>
+             <button name="action_validate" type="object" string="Accepter" class="btn-success oe_read_only" attrs="{'invisible': [('state', '!=', 'confirm')]}" data-hotkey="w"/>
+             <button name="action_reject" type="object" string="Refuser" class="oe_read_only" attrs="{'invisible': [('state', '!=', 'confirm')]}" data-hotkey="w"/>
+             <button name="action_recomfirm" type="object" string="Remettre en brouillon" class="btn-success oe_read_only" attrs="{'invisible': [('state', '!=', 'reject')]}" data-hotkey="w"/>
+             <button name="action_cancel" type="object" string="Annuler" class="oe_read_only" attrs="{'invisible': [('state', '!=', 'reject')]}" data-hotkey="w"/>
+             <button name="print_piece_caisse_pdf" type="object" string="IMPRIMER LA PIECE DE CAISSE" class="oe_read_only btn btn-success" attrs="{'invisible': [('state', '!=', 'done')]}" data-hotkey="w"/>
+             <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done,reject,cancel"/>
+           
+             <!-- <widget name="attach_document" string="Attach Receipt" action="message_post" attrs="{'invisible': ['|', ('attachment_number', '&lt;', 1), ('id','=',False)]}"/>
+             <widget name="attach_document" string="Attach Receipt" action="message_post" highlight="1" attrs="{'invisible': ['|',('attachment_number', '&gt;=', 1), ('id','=',False)]}"/> -->
+                
+                
+            </header>
+
+            <sheet>
+                <h2>
+                    <field name="numero_seq" readonly="1" string="Numero PC"/>
+                </h2>
+                
+                <group>
+                    <group>
+                        <label for="payment_mode"/>
+                        <div id="payment_mode">
+                            <h2>
+                               <field name="payment_mode" widget="radio" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}"/>
+                                <!-- <field name="payment_mode" widget="radio" options="{'horizontal': true}" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}"/> -->
+                            </h2>
+                        </div>
+                    </group>
+                    <group>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h2>
+                                <field name="name" placeholder="Ex. Déjeuné avec un client" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}" />
+                            </h2>
+                        </div>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="product_has_cost" invisible="1"/>
+                        <field name="same_currency" invisible="1"/>
+                        <field name="company_currency_id" invisible="1"/>
+                        <field name="product_id" required="1" context="{'default_can_be_expensed': 1, 'tree_view_ref': 'hr_expense.product_product_expense_tree_view', 'form_view_ref': 'hr_expense.product_product_expense_form_view'}"/>
+                        <field name="unit_amount" required="1" string="Prix unitaire" force_save="1" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" attrs="{'invisible': [('product_has_cost', '=', False)], 'readonly': [('product_has_cost', '=', True)]}"/>
+                        <field name="untaxed_amount" invisible="1" force_save="1"/>
+                        <field name="product_uom_category_id" invisible="1"/>
+                        <label for="quantity" attrs="{'invisible': [('product_has_cost', '=', False)]}"/>
+                        <div class="o_row" attrs="{'invisible': [('product_has_cost', '=', False)]}">
+                            <field name="quantity" class="oe_inline" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}" style="width: auto !important;"/>
+                            <field name="product_uom_id" required="1" force_save="1" options="{'no_open': True, 'no_create': True}" class="oe_inline" groups="uom.group_uom"/>
+                        </div>
+                        <label for="total_amount" attrs="{'invisible': [('product_has_cost', '=', True)]}"/>
+                        <div class="o_row" attrs="{'invisible': [('product_has_cost', '=', True)]}">
+                            <field name="total_amount" widget='monetary' options="{'currency_field': 'currency_id'}" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}" force_save="1"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </div>
+                        <!-- YTI TO REMOVE IN MASTER START -->
+                        <div class="o_td_label">
+                            <field name="label_total_amount_company" nolabel="1" class="o_form_label" invisible="1"/>
+                            <label for="total_amount_company" string="" attrs="{'invisible': [('same_currency', '=', True), ('product_has_cost', '=', False)]}"/>
+                        </div>
+                        <!-- YTI TO REMOVE IN MASTER END -->
+                        <div class="o_row d-flex" attrs="{'invisible': [('same_currency', '=', True), ('product_has_cost', '=', False)]}">
+                            <field name="total_amount_company" style="vertical-align: top;" widget='monetary' options="{'currency_field': 'company_currency_id'}" force_save="1"/>
+                            <field name="label_convert_rate"/>
+                        </div>
+                    </group>
+                    
+                    <group>
+                        <field name="date" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}"/>
+                        <field name="company_id" invisible="1" />
+                        <field name="product_has_cost" invisible="1" />
+                        <field name="employee_id" groups="hr_expense.group_hr_expense_team_approver" context="{'default_company_id': company_id}" widget="many2one_avatar_employee" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}"/>
+                        <!-- <field name="attachment" string="Joindre le reçu" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}"/> -->
+                        <field name="attachment_ids" string="Joindre le reçu" class="oe_highlight" widget="many2many_binary" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))], 'invisible':[('payment_mode','!=','own_account')]}"/>
+                        <!-- <label for="payment_mode"/>
+                        <div id="payment_mode">
+                            <field name="payment_mode" widget="radio" attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}"/>
+                        </div> -->
+                    </group>
+                </group>
+                <div>
+                    <field name="description" class="oe_inline" placeholder="Notes..." attrs="{'readonly': [('state', 'not in', ('draft','confirm'))]}"/>
+                </div>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_expense_request_tree" model="ir.ui.view">
+            <field name="name">hr.expense.request.tree</field>
+            <field name="model">hr.expense.request</field>
+            <field name="arch" type="xml">
+                <tree string="Expense Reports" >
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="payment_mode"/>
+                    <!-- <field name="total_amount"/> -->
+                    <field name="total_amount_company" optional="show" sum="Total des demandes notes de frais" widget='monetary' options="{'currency_field': 'company_currency_id'}" decoration-bf="True"/>
+
+                    <field name="state" string="État" optional="show" readonly="1" decoration-info="state == 'draft'" decoration-success="state in ['confirm', 'done']" decoration-danger="state in ['reject','cancel']" widget="badge"/>
+
+                </tree>
+            </field>
+        </record>
+
+    <record id="hr_expense_request" model="ir.actions.act_window">
+        <field name="name">Demande de notes de frais</field>
+        <field name="res_model">hr.expense.request</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="context">{"default_can_be_expensed": 1, 'default_detailed_type': 'service'}</field>
+        <field name="domain">[('can_be_expensed', '=', True)]</field> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            No expense products found. Let's create one!
+            </p><p>
+            Expense products can be reinvoiced to your customers.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hr_expense_request"
+                  name="Demande/Remboursement notes de frais" sequence="0" parent="hr_expense.menu_hr_expense_root"
+                  action="hr_expense_request"
+                  />
+
+    <record id="sequence_piece_caisse" model="ir.sequence">
+        <field name="name">Séquence</field>
+        <field name="code">hr.expense.request</field>
+        <field name="prefix">PC</field>
+        <field name="number_increment" eval="1"/>
+    </record>
+
+    <menuitem id="base.menu_portal_my_account" name="My Online Account" parent="base.menu_portal" action="base.action_portal_my_account"
+    />
+   
+</odoo>

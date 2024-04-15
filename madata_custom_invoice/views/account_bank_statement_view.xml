@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+   <!-- Form view of account analytic account -->
+   <record id="view_account_bank_statement_form_inherit" model="ir.ui.view">
+        <field name="name">account.bank.statement.form.inherit</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="libelle"/>
+            </xpath>
+        </field>
+    </record>
+
+   <!-- Tree view of account analytic account -->
+   <record id="view_account_bank_statement_tree_inherit" model="ir.ui.view">
+        <field name="name">account.bank.statement.tree.inherit</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="before">
+                <field name="libelle"/>
+                <field name="montant"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>  

@@ -1,0 +1,11 @@
+<odoo>
+	<data>
+
+        <record id="module1_security_rule_employee" model="ir.rule">
+                <field name="name">Restrict sur les employes par société</field>
+                <field name="model_id" ref="hr_cnps_mensuel.model_hr_cnps_monthly"/>
+                <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+                <field name="domain_force">['|',('company_id','=',user.company_id.id),('company_id','=',False)]</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="assets_backend" name="my_module name assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    </xpath>
+    </template>
+</odoo>
+
+
+
+
+
+
+
+
+    

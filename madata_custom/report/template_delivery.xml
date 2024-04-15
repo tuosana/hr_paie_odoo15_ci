@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id='report_delivery_document_bm'>
+        <t t-call='web.html_container'>
+            <t t-foreach="docs" t-as="o">  
+                <t t-call='web.external_layout'>
+                   
+                     <div class="text-center">
+                        <h1>
+                          <strong>BON DE MOUVEMENT</strong>
+                        </h1>
+                        <h3>
+                           <strong><span t-field="docs.name"/></strong> 
+                        </h3>
+                     </div>
+                     
+                    <div class="page">                        
+                        <div class="row mt32 mb32">
+                            <div t-if="docs.picking_type_code == 'outgoing'" class="col-auto" name="div_origin">
+                                <strong>Commande:</strong>
+                                <p t-field="docs.sale_id"/>
+                            </div>
+                            <div t-else=" " class="col-auto" name="div_origin">
+                                <strong>Commande:</strong>
+                                <p t-field="docs.origin"/>
+                            </div>
+                            <div t-if="docs.state" class="col-auto" name="div_sched_date">
+                                <strong>Date de livraison:</strong>
+                                <t t-if="docs.state == 'done'">
+                                    <p t-field="docs.date_done"/>
+                                </t>
+                                <t t-if="docs.state != 'done'">
+                                    <p t-field="docs.scheduled_date"/>
+                            </t>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm" name="stock_move_table">
+                            <thead>
+                                <tr>
+                                    <th name="th_sm_product"><strong>Articles</strong></th>
+                                    <th name="th_sm_ordered"><strong>Commande</strong></th>
+                                    <th name="th_sm_quantity"><strong>Livré</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.move_lines" t-as="move">
+                                   <t t-if="move.bl_or_bm == 'bon_mouvement'">
+                                         <td>
+                                            <span t-field="move.product_id"/>
+                                            <!-- <br/>
+                                            <span t-field="move.description_picking"/> -->
+                                        </td>
+                                        <td>
+                                            <span t-field="move.product_uom_qty"/>
+                                            <span t-field="move.product_uom"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="move.product_uom_qty"/>
+                                            <span t-field="move.product_uom"/>
+                                        </td>
+                                    </t>   
+                                </tr>    
+                            </tbody>
+                        </table>
+                        <br/>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <footer>
+                      <div class="row">
+                        <div class="col-6">
+                            <p class="text-left">Signature du client</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="text-right">Signature de la compagnie</p>
+                        </div>
+                     </div>
+                    </footer>
+              </t>
+            </t>
+        </t>
+    </template>
+
+
+<!-- Template de bon de livraison -->
+    <template id='report_delivery_document_bl'>
+        <t t-call='web.html_container'>
+            <t t-foreach="docs" t-as="o">  
+                <t t-call='web.external_layout'>
+                   
+                     <div class="text-center">
+                        <h1>
+                          <strong>BON DE LIVRAISON</strong>
+                        </h1>
+                        <h3>
+                           <strong><span t-field="docs.name"/></strong> 
+                        </h3>
+                     </div>
+                    <div class="page">                        
+                        <div class="row mt32 mb32">
+                            <div t-if="docs.picking_type_code == 'outgoing'" class="col-auto" name="div_origin">
+                                <strong>Commande:</strong>
+                                <p t-field="docs.sale_id"/>
+                            </div>
+                            <div t-else=" " class="col-auto" name="div_origin">
+                                <strong>Commande:</strong>
+                                <p t-field="docs.origin"/>
+                            </div>
+
+                            <div t-if="docs.state" class="col-auto" name="div_sched_date">
+                                <strong>Date de livraison:</strong>
+                                <t t-if="docs.state == 'done'">
+                                    <p t-field="docs.date_done"/>
+                                </t>
+                                <t t-if="docs.state != 'done'">
+                                    <p t-field="docs.scheduled_date"/>
+                            </t>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm" name="stock_move_table">
+                            <thead>
+                                <tr>
+                                    <th name="th_sm_product"><strong>Articles</strong></th>
+                                    <th name="th_sm_ordered"><strong>Commande</strong></th>
+                                    <th name="th_sm_quantity"><strong>Livré</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.move_lines" t-as="move">
+                                    <t t-if="move.bl_or_bm == 'bon_livraison'">
+                                         <td>
+                                            <span t-field="move.product_id"/>
+                                            <!-- <br/>
+                                            <span t-field="move.description_picking"/> -->
+                                        </td>
+                                        <td>
+                                            <span t-field="move.product_uom_qty"/>
+                                            <span t-field="move.product_uom"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="move.product_uom_qty"/>
+                                            <span t-field="move.product_uom"/>
+                                        </td>
+                                    </t>   
+                                </tr>    
+                            </tbody>
+                        </table>
+                        <br/>
+                        
+                    </div>
+                   <footer>
+                      <div class="row">
+                        <div class="col-6">
+                            <p class="text-left">Signature du client</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="text-right">Signature de la compagnie</p>
+                        </div>
+                     </div>
+                    </footer>
+              </t>
+            </t>
+        </t>
+    </template>  
+</odoo>
+
+
+
+
+
+
+
+
+    

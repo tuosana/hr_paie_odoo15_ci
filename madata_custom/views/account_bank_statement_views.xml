@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <!-- Form view of account analytic account -->
+   <record id="view_account_analytic_form_inherit" model="ir.ui.view">
+        <field name="name">account.bank.statement.form.inherit</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_validate_or_action']" position="attributes">
+                <attribute name='attrs'>{'invisible':['|',('line_ids','=',[]), ('state', '!=', 'posted')]}</attribute>
+            </xpath> 
+        </field>
+    </record>
+    <!-- , '|', ('all_lines_reconciled', '=', False), -->
+</odoo>

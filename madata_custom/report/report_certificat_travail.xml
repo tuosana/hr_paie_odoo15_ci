@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="report_certificat_trav" model="ir.actions.report">
+        <field name="name">Certificat de travail</field>
+        <field name="model">hr.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">madata_custom.report_certificat_trav_id</field>
+        <field name="report_file">madata_custom.report_certificat_trav_id</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    <template id="report_certificat_trav_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="os_structure"/>
+                        <div align="center">
+                            <table class="table table-condensed" style="border: 3px solid black !important; text-align:center; width:50%;" >
+                                <tr><td>
+                                        <h2 style="color: #000000;"> CERTIFICAT DE TRAVAIL </h2>
+                                </td></tr>
+                            </table>
+                        </div>
+                        <br/><br/>
+                        <t t-if="o.employee_id">
+                        <t t-foreach="o.employee_id" t-as="line">
+                            <div style="font-size: 18px; font-family: Arial; text-align:justify; margin: 20px; line-height: 50px;" >                          
+                                <p>
+                                    Nous soussignés, ADEMAT, 01 BP 6300 Abidjan 01, Numéro CNPS Employeur : 46493, certifions que
+                                    <strong><span t-field="line.civilite"/>
+                                    <span t-field="docs.employee_id"/></strong>, 
+                                    Matricule <strong><span t-field="line.identification_id"/></strong>, Numéro CNPS Salarié : <strong><span t-field="line.matricule_cnps"/></strong>, 
+                                    a été employé dans notre société en qualité de :
+                                </p>
+                                <p>
+                                    -	<strong><span t-field="docs.job_id"/></strong> du <strong><span t-field="docs.date_start"/></strong> au <strong><span t-field="docs.date_end"/></strong>
+                                    (Catégorie : <strong><span t-field="line.category_id"/></strong>)
+                                </p>
+                                <p>
+                                    Il nous quitte, ce jour, libre de tout engagement.
+                                </p>
+                                <p>
+                                    En foi de quoi, le présent certificat lui est délivré pour servir et valoir ce que de droit. 
+                                </p><br/> 
+
+                                <table align="right">
+                                    <tr>
+                                        <td>
+                                            <p>Fait à Abidjan, le  <span t-field="line.today"/></p><br/><br/>
+                                        </td>
+                                    </tr>
+                                </table><br/>
+                                <!-- <div style="text-align: center;"> -->
+                                <!-- <div align="center">
+                                    <strong><span t-field="docs.leave_manager_id"/></strong>
+                                    <p><span t-field="docs.manager_job"/></p>
+                                </div> -->
+                                <div align="center">
+                                    <table style="text-align:center; width:50%;" >
+                                    <tr><td><strong><span t-field="docs.hr_responsible_id"/></strong></td></tr>
+                                    <tr><td><p><span t-field="line.manager_job"/></p></td></tr>
+                                    </table>
+                                </div>
+                            </div> 
+                        </t>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
+

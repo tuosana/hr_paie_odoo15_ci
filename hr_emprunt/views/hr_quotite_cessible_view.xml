@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<odoo>
+	<data>
+
+ <!--
+			==========
+			Quotité cessible
+			==========
+			-->
+
+		<record model="ir.ui.view" id="quotite_tree_view">
+			<field name="name">quotite.tree</field>
+			<field name="model">hr.emprunt.quotite</field>
+			<field name="arch" type="xml">
+				<tree string="Quotité">
+					<field name="name"/>
+					<field name="job_id"/>
+					<field name="somme_max"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="quotite_form_view">
+			<field name="name">quotite.form</field>
+			<field name="model">hr.emprunt.quotite</field>
+			<field name="arch" type="xml">
+				<form string="quotite cessible" version="7.0">
+				<sheet>
+					<group col="4" name="quotity">
+						<separator string="Critere" colspan="2"/>
+						<separator string="Somme cessible" colspan="2"/>
+						<field name="name" required="1" col="2"/>
+						<field name="somme_max" col="2"/>
+						<field name="job_id" col="2"/>
+					</group>
+					<notebook colspan="4">
+						<page string="Description">
+							<field name="description" nolabel="1"/>
+						</page>
+					</notebook>
+				  </sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="quotite_search_view">
+			<field name="name">quotite.search</field>
+			<field name="model">hr.emprunt.quotite</field>
+			<field name="arch" type="xml">
+				<search string="Recherche des Quotités">
+					<group col='15' colspan='4'>
+						<field name="name"/>
+						<field name="job_id"/>
+						<!--  <field name="somme_min"/>-->
+						<field name="somme_max"/>
+				   </group>
+				</search>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_quotite_view">
+			<field name="name">Quotité cessible</field>
+			<field name="res_model">hr.emprunt.quotite</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="quotite_menu" name="Quotités Cessibles" parent="emprunt_menu_root_id" action="action_quotite_view"
+				  groups="hr_emprunt.group_hr_emprunt_manager" sequence="1"/>
+	</data>
+</odoo>

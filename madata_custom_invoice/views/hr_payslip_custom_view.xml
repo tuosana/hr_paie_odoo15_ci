@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+   <record id="view_employee_form_leave_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.leave.form.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll_community.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='credit_note']" position="after">
+                <field name="nbj_acquis" readonly="1" force_save="1"/>
+                <field name="nbj_pris" readonly="1" force_save="1"/>
+                <field name="nbj_restants" readonly="1" force_save="1"/>
+                <field name="notes_frais" readonly="1" force_save="1"/>
+                <field name="notes_frais_retenu" readonly="1" force_save="1"/>
+                <!-- <field name="employee_conges" readonly="1" force_save="1"/> -->
+                <field name="last_three_leaves" readonly="1" force_save="1"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_payslip_done']" position="attributes">
+                <attribute name='class'>oe_read_only oe_highlight</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='refund_sheet']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_payslip_draft']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='compute_sheet']" position="attributes">
+                <attribute name='class'>oe_read_only oe_highlight</attribute>
+            </xpath>
+            
+            <xpath expr="//button[@name='action_payslip_cancel']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>  

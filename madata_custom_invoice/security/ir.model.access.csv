@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_analytic_group,account.analytic.group,model_account_analytic_group,base.group_user,1,1,1,1
+access_account_analytic_family,account.analytic.family,model_account_analytic_family,base.group_user,1,1,1,1
+access_sale_order,sale.order,model_sale_order,base.group_user,1,1,1,1
+
+

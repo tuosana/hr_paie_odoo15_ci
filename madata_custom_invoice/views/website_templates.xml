@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <template id="pack_layout" inherit_id="web.layout" name="MYSITE layout">
+        <xpath expr="//head/link" position="replace">
+           <link type="image/x-icon" rel="shortcut icon" t-att-href="x_icon or '/madata_custom_invoice/static/img/favicon.ico'"/>       
+        </xpath>
+  </template>
+</odoo>
+
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     
+</odoo> -->

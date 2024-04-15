@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <record id='secteur_activite_action' model='ir.actions.act_window'>
+            <field name="name">Secteur d'Activité</field>
+            <field name="res_model">secteur.activite</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <menuitem name="Categorie" id="secteur_activite_cat_menu" parent="contacts.res_partner_menu_config" groups="base.group_user" sequence="20"/>
+        <menuitem name="Secteur d'Activite" id="secteur_activite_menu" parent="secteur_activite_cat_menu" action="secteur_activite_action" groups="base.group_user" sequence="2"/>
+
+
+        <record id="secteur_activite_view_form" model="ir.ui.view">
+        <field name="name">Secteur d'Activité</field>
+        <field name="model">secteur.activite</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+        <record id="secteur_activite_tree" model="ir.ui.view">
+            <field name="name">Secteur d'Activités</field>
+            <field name="model">secteur.activite</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+    </odoo>

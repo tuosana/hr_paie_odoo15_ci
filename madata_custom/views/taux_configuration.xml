@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <record id='taux_action' model='ir.actions.act_window'>
+            <field name="name">Taux Configuration Frais Généraux</field>
+            <field name="res_model">taux.configuration.vente</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+       <record id="tauxtree" model="ir.ui.view">
+            <field name="name">Taux Configuration Frais Généraux</field>
+            <field name="model">taux.configuration.vente</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom">
+                    <field name="taux"/>
+                </tree>
+            </field>
+        </record>
+        <menuitem name="Taux Configuration Frais Généraux" id="secteur_activite_menu" parent="sale.menu_sale_config" action="taux_action" groups="base.group_user" sequence="15"/>
+    </odoo>

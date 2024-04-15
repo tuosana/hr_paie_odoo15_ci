@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+		<!-- gestion des diplomes -->
+    		<record model="ir.ui.view" id="hr_employee_box_update">
+                <field name="name">hr.employee.form</field>
+                <field name="model">hr.employee</field>
+                <field name="inherit_id" ref="hr_update.hr_employee_inh_form_view" />
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='matricule_cnps']" position="after">
+                        <field name="cni_number" string="Numéro CNI"/>
+                    </xpath>
+                </field>
+            </record>
+    </data>
+</odoo>

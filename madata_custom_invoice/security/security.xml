@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.module.category" id="category_leapfrogg_custom">
+        <field name="name"> New group Management</field>
+        <field name="description">Category for ademat custom</field>
+    </record>
+
+    <record id="group_ademat_vendor" model="res.groups">
+        <field name="name">Vendor</field>
+        <field name="category_id" ref="category_leapfrogg_custom"/>
+    </record>
+
+    <record id="group_leapfrogg_custom" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="category_leapfrogg_custom"/>
+        <field name="implied_ids" eval="[(4,ref('group_ademat_vendor'))]"/>
+    </record>
+</odoo>

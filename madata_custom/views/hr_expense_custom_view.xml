@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    
+   <!-- Form  view of modele hr expense sheet -->
+   <record id="view_expense_sheet_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.form.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field style="color:red;" name="notes_frais_r_g" string="Retenu sur le salaire"
+                attrs="{'readonly': [('state', '!=', 'approve')],'invisible': ['|',('payment_mode', '!=', 'company_account'),('state', 'not in', ('approve','done'))]}"/>
+                
+                <field style="color:red;" name="notes_frais_r_g" string="Gain sur le salaire"
+                attrs="{'readonly': [('state', '!=', 'approve')],'invisible': ['|',('payment_mode', '!=', 'own_account'),('state', 'not in', ('approve','post','done'))]}"/>
+                
+                <field style="color:red;" name="amount_withheld"  force_save="1"
+                attrs="{'readonly': [('state', '!=', 'approve')],'invisible': ['|',('payment_mode', '!=', 'company_account'),('state', 'not in', ('approve','done'))]}"/>
+            </xpath>                  
+            <xpath expr="//field[@statusbar_visible='draft,submit,approve,post,done']" position="replace">
+             <field name="state" widget="statusbar" statusbar_visible="draft,approve,post,done" force_save="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name='required'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name='readonly'>1</attribute>
+            </xpath>
+
+            <!-- <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Description" readonly="1" force_save="1"/>
+            </xpath> -->
+
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name='string'>Description</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_submit_sheet']" position="attributes">
+                <attribute name='class'>oe_read_only btn-success o_expense_sheet_submit</attribute>
+                <attribute name='string'>Confirmer</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_sheet_move_create']" position="attributes">
+                <attribute name='class'>oe_read_only btn-success o_expense_sheet_approve</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_register_payment']" position="attributes">
+                <attribute name='class'>oe_read_only btn-success o_expense_sheet_post</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_unpost']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='approve_expense_sheets']" position="attributes">
+                <attribute name='class'>oe_read_only btn-success</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='reset_expense_sheets']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+
+            <xpath expr="//button[@states='submit,approve']" position="attributes">
+                <attribute name='class'>oe_read_only</attribute>
+            </xpath>
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='expense_line_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <record id="view_hr_expense_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.tree.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- Form  view of modele hr expense -->
+    <record id="view_expense_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.form.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//field[@name='product_id']" position="before">
+                <field name="request_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            </xpath> -->
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name='attrs'>{'readonly': [('sheet_id', '=', True)]}</attribute>
+            </xpath>
+            
+            <xpath expr="//button[@name='action_submit_expenses']" position="attributes">
+                <attribute name='class'>oe_highlight o_expense_submit oe_read_only</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_sheet']" position="attributes">
+                <attribute name='class'>oe_read_only oe_highlight</attribute>
+            </xpath>
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_mode']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//label[@for='payment_mode']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_expense_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.tree.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.view_my_expenses_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_expense.hr_expense_actions_my_unsubmitted" model="ir.actions.act_window">
+        <field name="name">My Expenses to Report</field>
+        <field name="res_model">hr.expense</field>
+        <field name="view_mode">tree,kanban,form,graph,pivot,activity</field>
+        <field name="search_view_id" ref="hr_expense.hr_expense_view_search"/>
+        <field name="context">{'search_default_my_expenses': 1, 'search_default_no_report': 1}</field>
+        <field name="help" type="html">
+            <h2>
+                Bienvenue sur MADATA pour la gestion de vos notes de frais 
+            </h2>
+        </field>
+    </record>
+    <record id="hr_expense.hr_expense_actions_my_all" model="ir.actions.act_window">
+        <field name="name">All My Expenses</field>
+        <field name="res_model">hr.expense</field>
+        <field name="view_mode">tree,kanban,form,graph,pivot,activity</field>
+        <field name="search_view_id" ref="hr_expense.hr_expense_view_search"/>
+        <field name="context">{'search_default_my_expenses': 1}</field>
+        <field name="help" type="html">
+           <h2>
+                Bienvenue sur MADATA pour la gestion de vos notes de frais 
+          </h2>
+        </field>
+    </record>
+</odoo>  

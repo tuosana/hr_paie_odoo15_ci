@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="madata_custom_invoice.report_invoice_no_header_with_payment"
+                model="account.move"
+                string="Facture payée sans entête"
+                name="madata_custom_invoice.report_invoice_no_header_with_payments_template"
+                file="madata_custom_invoice.invoice_no_header_with_payment"
+                report_type="qweb-pdf"/>
+
+    </data>
+</odoo>

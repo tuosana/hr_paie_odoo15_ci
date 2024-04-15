@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="expense_wizard_id" model="ir.ui.view">
+        <field name="name">hr.expense.report.wizard.form</field>
+        <field name="model">hr.expense.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="bouton">
+                <P><h4>Liste des demandes des rapports des notes de frais</h4></P>
+                <group>
+                    <group>
+                     <field name="date_debut"/>
+                    </group>
+                    <group>
+                     <field name="date_fin"/>
+                    </group>
+                    <group>
+                     <field name="employee_id"/>
+                    </group>
+                </group>
+
+                <group>
+                    <group>
+                     <field name="payment_mode" widget="radio"/>
+                    </group>
+                    <group>
+                     <field name="state" widget="radio"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_print_reporting" type="object" class="oe_highlight" string='Imprimmer'/>
+                    <!-- <button id="boton_confirm" name="action_print_reporting" type="object" class="oe_highlight" string='Imprimmer'/>
+                    <button id="boton_cancel" name="action_cancel" type="object" class="oe_highlight" string='Annuler'/> -->
+                </footer> 
+            </form>
+        </field>
+    </record>
+
+    <record id="action_expense_wizard" model="ir.actions.act_window">
+        <field name="name">Mes rapports</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.expense.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="expense_wizard_id"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem name="Mes rapports" id="menu_expense_rapport" parent="hr_expense.menu_hr_expense_root" action="action_expense_wizard1" groups="base.group_user"/>
+</odoo>

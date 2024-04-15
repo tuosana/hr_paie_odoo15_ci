@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+   <record id="view_payslip_form_leave_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='struct_id']" position="after">
+                <field name="nbj_acquis" invisible="1" force_save="1"/>
+                <field name="nbj_pris" invisible="1" force_save="1"/>
+                <field name="nbj_restants" invisible="1" force_save="1"/>
+                <!-- <field name="nbh_travailler" readonly="1" force_save="1"/> -->
+                <field name="last_three_leaves" invisible="1" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>  

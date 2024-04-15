@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="contact_form_partenaire_inherit" model="ir.ui.view">
+        <field name="name">res.partner.contact.form.view.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="before"> 
+                <field name="nc_client"/>
+                <field name="code_cc"/>
+                <field name="categ_societe"/>
+                <field name="secteur_acts"/>
+                <field name="activite_ent"/>
+                <field name="nbemp"/>
+                <field name="type_f"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='accounting']" position="attributes">
+                <attribute name="string">Comptabilité</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="contact_tree_inherit" model="ir.ui.view">
+        <field name="name">res.partner.contact.tree.view.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="before">
+                <field name="nc_client"/>
+                <field name="code_cc"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Fermeture des menuitems -->
+    <record id="make_invisible" model="res.groups">
+        <field name="name">Invisible</field>
+    </record>
+    <record model="ir.ui.menu" id="utm.menu_link_tracker_root">
+        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+    </record>
+    <record model="ir.ui.menu" id="utm.marketing_utm">
+        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+    </record> 
+    
+</odoo>
+

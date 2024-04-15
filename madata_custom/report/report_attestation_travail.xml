@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="report_attestation_travail" model="ir.actions.report">
+        <field name="name">Attestation de travail</field>
+        <field name="model">hr.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">madata_custom.report_attestation_travail_id</field>
+        <field name="report_file">madata_custom.report_attestation_travail_id</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    <template id="report_attestation_travail_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="os_structure"/>
+                        <div align="center">
+                            <table class="table table-condensed" style="border: 3px solid black !important; text-align:center; width:50%;" >
+                                <tr><td>
+                                        <h2 style="color: #000000;"> ATTESTATION DE TRAVAIL </h2>
+                                </td></tr>
+                            </table>
+                        </div>
+                        <br/><br/>
+                        <t t-if="o.employee_id">
+                        <t t-foreach="o.employee_id" t-as="line">
+                            <div style="font-size: 18px; font-family: Arial; margin: 20px; line-height: 50px;" >                          
+                                <p style="text-align:justify;">Je soussigné, Monsieur 
+                                    <strong><span t-field="docs.hr_responsible_id"/></strong> , <strong><span t-field="line.manager_job"/></strong> , 
+                                    de la société ADEMAT, 01 BP 6300 Abidjan 01, Numéro CNPS Employeur : 46493, atteste que <strong>
+                                    <span t-field="line.civilite"/> <span t-field="docs.employee_id"/></strong>, Matricule <strong>
+                                    <span t-field="line.identification_id"/>
+                                    </strong>, Numéro CNPS Salarié :   <strong><span t-field="line.matricule_cnps"/>
+                                    </strong> qui occupe actuellement les fonctions de <strong>
+                                    <span t-field="docs.job_id"/>
+                                    </strong> est employé dans notre 
+                                    société depuis le <strong><span t-field="docs.date_start"/></strong>.
+                                </p>
+                                <p>
+                                    <strong>En foi de quoi, la présente attestation lui est délivrée pour servir et valoir ce que de droit.</strong> 
+                                </p><br/>
+
+                                <table align="right">
+                                    <tr>
+                                        <td>
+                                            <p>Fait à Abidjan, le  <span t-field="line.today"/></p>
+                                        </td>
+                                    </tr>
+                                </table><br/><br/>
+                                <div align="center">
+                                    <table style="text-align:center; width:50%;" >
+                                        <tr><td><strong><span t-field="docs.hr_responsible_id"/></strong></td></tr>
+                                        <tr><td><p><span t-field="line.manager_job"/></p></td></tr>
+                                    </table>
+                                </div>
+                            </div> 
+                        </t>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
+

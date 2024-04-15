@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>  
+    <!-- Form  view of modele hr contract -->
+    <record id="view_hr_contract_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='top_info_right']" position="after">
+                <field name="expatried" />
+                <div>
+                    <field name="an_anciennete" class="oe_inline"/> ans - <field name="mois_anciennete" class="oe_inline"/> mois
+                </div>
+            </xpath>
+            <xpath expr="//group[@name='salary']" position="replace">
+                <group name="salary"> 
+                    <field name="hr_convention_id" />
+                    <field name="hr_secteur_id"/>
+                    <field name="category_id" required="True"/>
+                    <field name="categorie_salariale_id"/>
+                    <label for="wage"/>
+                    <div class="o_row" name="wage">
+                        <field name="wage" nolabel="1"/>
+                        <span>/ month</span>
+                    </div>
+                    <field name="sursalaire"/>
+                </group>
+                <!-- <field name="advantages" nolabel="1" placeholder="Advantages..." colspan="2" invisible="1"/> -->
+                <separator string="Primes &amp; avantages"/>
+                <field name="hr_payroll_prime_ids">
+                    <tree string="Les primes" editable="top">
+                        <field name="prime_id" string="Libellé"/>
+                        <field name="montant_prime" />
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>   
+</odoo>  
